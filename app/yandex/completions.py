@@ -378,10 +378,10 @@ def _format_text_chunk_response(chunk: ResponseChunk) -> str:
     return f"data: {json.dumps(response_data, ensure_ascii=False)}\n\n"
 
 def _generate_completion_id():
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=24))
 
 def _generate_fingerprint():
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=24))
 
 def _format_tool_call_response(chunk: ResponseChunk, yc_completion_request: YaCompletionRequest) -> str:
     """Форматирует ответ с вызовом инструмента в формат SSE."""
@@ -492,7 +492,7 @@ def _transform_to_openai_response_format(
         raise HTTPException(status_code=500, detail="Ошибка при обработке ответа от Yandex GPT")
 
 
-def _generate_completion_id(length: int = 8) -> str:
+def _generate_completion_id(length: int = 24) -> str:
     """Генерирует уникальный идентификатор для завершения."""
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
