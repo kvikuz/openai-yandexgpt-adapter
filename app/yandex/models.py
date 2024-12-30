@@ -45,7 +45,15 @@ class Message(BaseModel):
 class FunctionTool(BaseModel):
     name: str
     description: str = Field(default="")
-    parameters: Dict[str, Any] = Field(default={})
+    parameters: Dict[str, Any] = Field(default_factory=dict)
+
+    @model_validator(mode='before')
+    def set_empty_defaults(cls, values):
+        if values.description is None:
+            values.description = ""
+        if values.parameters is None:
+            values.parameters = {}
+        return values
 
 class Tool(BaseModel):
     function: FunctionTool
