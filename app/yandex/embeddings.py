@@ -55,7 +55,7 @@ from asyncio import Queue
 
 load_dotenv()
 
-YC_EMBEDDINGS_MODEL_MAP = os.getenv("YC_EMBEDDINGS_MODEL_MAP", "gpt-4o:yandexgpt/latest,gpt-4o-mini:yandexgpt-lite/latest,gpt-3.5:yandexgpt/latest,gpt-3.5-turbo:yandexgpt/latest,gpt-5:yandexgpt/latest")
+YC_EMBEDDINGS_MODEL_MAP = os.getenv("YC_EMBEDDINGS_MODEL_MAP", "text-embedding-3-large:text-search-doc/latest,text-embedding-3-small:text-search-doc/latest,text-embedding-ada-002:text-search-doc/latest")
 YC_LOG_POLICY = os.getenv("YC_FOMO_LOG_POLICY", "True").lower() == "true"
 YC_SERVICE_URL = os.getenv("YC_SERVICE_URL", "https://llm.api.cloud.yandex.net")
 YC_EMBEDDINGS_RETRIES = os.getenv("YC_EMBEDDINGS_RETRIES", "True").lower() == "true"

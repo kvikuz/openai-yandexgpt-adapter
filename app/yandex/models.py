@@ -44,8 +44,8 @@ class Message(BaseModel):
 
 class FunctionTool(BaseModel):
     name: str
-    description: str
-    parameters: Dict[str, Any]
+    description: str = Field(default="")
+    parameters: Dict[str, Any] = Field(default={})
 
 class Tool(BaseModel):
     function: FunctionTool

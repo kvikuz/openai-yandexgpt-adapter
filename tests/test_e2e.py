@@ -629,3 +629,81 @@ def test_streaming_completion_with_tools_e2e_hard():
     collected_messages = [m for m in collected_messages if m is not None]
     full_reply_content = ''.join(collected_messages)
     assert full_reply_content is not None and full_reply_content != "" and isinstance(full_reply_content, str)
+    
+
+@pytest.mark.parametrize("model", [
+    "yandexgpt/latest",
+])
+def test_completion_with_tool_missing_description(model):
+    """
+    Тестирует поведение API, когда инструмент имеет функцию без описания.
+    """
+    tools = [
+        {
+            "type": "function",
+            "function": {
+                "name": "get_weather",
+                # "description" is intentionally omitted
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "city": {
+                            "type": "string",
+                            "description": "Название города"
+                        }
+                    },
+                    "required": ["city"]
+                }
+            }
+        }
+    ]
+
+    try:
+        response = oai.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": "Вы - помощник, который может узнавать погоду"},
+                {"role": "user", "content": "Какая погода в Москве?"}
+            ],
+            tools=tools,
+            temperature=0
+        )
+        # Assert that the response does not contain errors related to missing description
+        assert response and not hasattr(response, 'error'), "Response should not have an error despite missing description."
+    except Exception as e:
+        pytest.fail(f"API вызвал исключение при отсутствии описания функции: {e}")
+
+
+@pytest.mark.parametrize("model", [
+    "yandexgpt/latest",
+])
+def test_completion_with_tool_missing_parameters(model):
+    """
+    Тестирует поведение API, когда инструмент имеет функцию без параметров.
+    """
+    tools = [
+        {
+            "type": "function",
+            "function": {
+                "name": "get_time",
+                "description": "Получить текущее время в указанном городе",
+                # "parameters" is intentionally omitted
+            }
+        }
+    ]
+
+    try:
+        response = oai.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": "Вы - помощник, который может узнавать время"},
+                {"role": "user", "content": "Который час в Москве?"}
+            ],
+            tools=tools,
+            temperature=0
+        )
+        # Assert that the response does not contain errors related to missing parameters
+        assert response and not hasattr(response, 'error'), "Response should not have an error despite missing parameters."
+    except Exception as e:
+        pytest.fail(f"API вызвал исключение при отсутствии параметров функции: {e}")
+    
