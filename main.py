@@ -7,6 +7,7 @@ load_dotenv()
 
 GITHUB_SHA = os.getenv("GITHUB_SHA", "unknown_version")
 GITHUB_REF = os.getenv("GITHUB_REF", "unknown_branch")
+PORT = os.environ.get("PORT", 8080)
 
 app = FastAPI(
     title="OpenAI SDK Adapter",
@@ -18,5 +19,5 @@ app.include_router(index)
 
 if __name__ == "__main__":
     import uvicorn
-    
-    uvicorn.run("main:app", host="0.0.0.0", port=9041, reload=True)
+
+    uvicorn.run("main:app", port=int(PORT), host="0.0.0.0", reload=True)
